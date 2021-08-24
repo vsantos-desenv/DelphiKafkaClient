@@ -26,7 +26,7 @@ type
 
     procedure Stop;
 
-    class operator Finalize(var ADest: TOperationTimer);
+//    class operator Finalize(var ADest: TOperationTimer);
   end;
 
   TKafkaUtils = class
@@ -165,15 +165,15 @@ begin
   end;
 end;
 
-class operator TOperationTimer.Finalize(var ADest: TOperationTimer);
-begin
-  if ADest.FStopwatch.IsRunning then
-  begin
-    ADest.FStopwatch.Stop;
-
-    TKafkaHelper.Log('Finished - ' + ADest.FOperation + ' in ' + ADest.FStopwatch.ElapsedMilliseconds.ToString + 'ms', TKafkaLogType.kltDebug);
-  end;
-end;
+//class operator TOperationTimer.Finalize(var ADest: TOperationTimer);
+//begin
+//  if ADest.FStopwatch.IsRunning then
+//  begin
+//    ADest.FStopwatch.Stop;
+//
+//    TKafkaHelper.Log('Finished - ' + ADest.FOperation + ' in ' + ADest.FStopwatch.ElapsedMilliseconds.ToString + 'ms', TKafkaLogType.kltDebug);
+//  end;
+//end;
 
 { TKafkaUtils }
 
@@ -471,8 +471,9 @@ var
   KeyBytes, PayloadBytes: TBytes;
   i: Integer;
   KeyData: TBytes;
+  Timer: TOperationTimer;
 begin
-  {$IFDEF DEBUG}var Timer := TOperationTimer.Create('Formatting %d messages', [Length(Payloads)]);{$ENDIF}
+  {$IFDEF DEBUG}Timer := TOperationTimer.Create('Formatting %d messages', [Length(Payloads)]);{$ENDIF}
 
   SetLength(PayloadPointers, length(Payloads));
   SetLength(PayloadLengths, length(Payloads));
